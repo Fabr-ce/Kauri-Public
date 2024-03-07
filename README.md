@@ -9,7 +9,7 @@ while at the same time avoiding the bottleneck of star based solutions.
 This repo includes the prototype implementation evaluated in our 
 *Kauri: Scalable BFT Consensus with PipelinedTree-Based Dissemination and Aggregation* paper.
 
-Which will be published and presented at SOSP (https://sosp2021.mpi-sws.org/cfp.html)
+Which was published and presented at SOSP ([https://sosp2021.mpi-sws.org/cfp.html](https://dl.acm.org/doi/abs/10.1145/3477132.3483584))
 
 ### Features
 
