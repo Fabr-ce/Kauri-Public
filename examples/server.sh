@@ -61,7 +61,7 @@ dig A $service +short | sort -u | sed -e 's/$/ 1/' >> ips
 
 sleep 5
 
-python3 scripts/gen_conf.py --ips "ips" --crypto $crypto --fanout $fanout --pipedepth $pipedepth --pipelatency $pipelatency --block-size $blocksize --pace-maker rr
+python3 scripts/gen_conf.py --ips "ips" --crypto $crypto --fanout $fanout --pipedepth $pipedepth --pipelatency $pipelatency --block-size $blocksize
 
 sleep 5
 
