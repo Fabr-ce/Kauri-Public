@@ -16,7 +16,7 @@ service1="server1-$KAURI_UUID"
 
 # Make sure correct branch is selected for crypto
 cd Kauri-Public && git pull && git submodule update --recursive --remote
-git checkout latest
+git checkout reconfiguration
 
 # Do a quick compile of the branch
 git pull && cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED=ON -DHOTSTUFF_PROTO_LOG=ON && make
@@ -63,7 +63,7 @@ dig A $service +short | sort -u | sed -e 's/$/ 1/' >> ips
 sleep 5
 
 # Generate the HotStuff config file based on the given parameters
-python3 scripts/gen_conf.py --ips "ips" --crypto $crypto --fanout $fanout --pipedepth $pipedepth --pipelatency $pipelatency
+python3 scripts/gen_conf.py --ips "ips" --crypto $crypto --fanout $fanout --pipedepth $pipedepth --pipelatency $pipelatency --pace-maker rr
 
 sleep 20
 
@@ -79,12 +79,10 @@ sudo tc qdisc add dev eth0 root netem delay ${latency}ms limit 400000 rate ${ban
 
 sleep 25
 
-# Start Client on Host Machine
-if [ ${id} == 0 ]; then
-  gdb -ex r -ex bt -ex q --args ./examples/hotstuff-client --idx ${id} --iter -900 --max-async 900 > clientlog0 2>&1 &
-fi
+# Start Client on every Machine
+gdb -ex r -ex bt -ex q --args ./examples/hotstuff-client --idx ${id} --iter -900 --max-async 900 > clientlog0 2>&1 &
 
-sleep 300
+sleep 180
 
 killall hotstuff-client &
 killall hotstuff-app &
