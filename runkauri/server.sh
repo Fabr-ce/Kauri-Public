@@ -17,7 +17,7 @@ service1="server1-$KAURI_UUID"
 
 # Make sure correct branch is selected for crypto
 cd Kauri-Public && git pull && git submodule update --recursive --remote
-git checkout latest-secp
+git checkout reconfig-secp
 
 # Do a quick compile of the branch
 git pull && cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED=ON -DHOTSTUFF_PROTO_LOG=ON && make
@@ -80,12 +80,18 @@ sudo tc qdisc add dev eth0 root netem delay ${latency}ms limit 400000 rate ${ban
 
 sleep 25
 
-# Start Client on Host Machine
+# Start Client on every Machine
+gdb -ex r -ex bt -ex q --args ./examples/hotstuff-client --idx ${id} --iter -900 --max-async ${clientasync} > clientlog0 2>&1 &
+
+sleep 50
+
+# kill the leader
 if [ ${id} == 0 ]; then
-  gdb -ex r -ex bt -ex q --args ./examples/hotstuff-client --idx ${id} --iter -900 --max-async 900 > clientlog0 2>&1 &
+  killall hotstuff-client &
+  killall hotstuff-app &
 fi
 
-sleep 180
+sleep 130
 
 killall hotstuff-client &
 killall hotstuff-app &
