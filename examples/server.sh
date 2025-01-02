@@ -14,11 +14,8 @@ service="server-$KOLLAPS_UUID"
 service1="server1-$KOLLAPS_UUID"
 
 cd libhotstuff && git pull && git submodule update --recursive --remote
-if [ $crypto = "bls" ]; then
-  git checkout bls-branch
-else
-  git checkout libsec-branch
-fi
+git checkout reconfig-secp
+
 
 git pull && cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED=ON -DHOTSTUFF_PROTO_LOG=ON && make
 
